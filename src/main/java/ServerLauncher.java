@@ -21,12 +21,12 @@ public class ServerLauncher {
         HashMap<String, String> data = parser.parse();
 
         //print Hashmap
-        Iterator it = data.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
-            System.out.println(pair.getKey() + " = " + pair.getValue());
-            it.remove(); // avoids a ConcurrentModificationException
-        }
+        // Iterator it = data.entrySet().iterator();
+        // while (it.hasNext()) {
+        // Map.Entry pair = (Map.Entry)it.next();
+        // System.out.println(pair.getKey() + " = " + pair.getValue());
+        // it.remove(); // avoids a ConcurrentModificationException
+        // }
 
         // Put to Database
         sql.addMessurement(data);

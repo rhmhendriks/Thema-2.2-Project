@@ -16,6 +16,8 @@ public class XMLParser{
     private ArrayList notToUseTags; 
     private String xmlFileName;
 
+    public XMLParser() {
+    };
     
     
     // Onderstaande methoden voor toekomstig gebruik parser
@@ -95,7 +97,10 @@ public class XMLParser{
     /** 
      * @return HashMap<String, String>
      */
-    public HashMap<String, String> parse(){
+    public HashMap<String, String> parse(String file) {
+        if (!file.equals("")) {
+            this.xmlFileName = file;
+        }
         final ClassLoader classloader = Thread.currentThread().getContextClassLoader();
         BufferedReader br = null;
         String regel;
@@ -141,5 +146,38 @@ public class XMLParser{
             }
         } 
         return hm;
+    }
+
+    /**
+     * @return HashMap<String, String>
+     */
+    public ArrayList<HashMap<String, String>> parseStream(String whatTagToParse, String theStream) {
+        ArrayList<HashMap<String, String>> extractedData = new ArrayList<>();
+
+        Pattern extractedSubStream = Pattern.compile("<" + whatTagToParse + ">(.*?)</" + whatTagToParse + ">");
+        Matcher subMatch = extractedSubStream.matcher(theStream);
+
+        while (subMatch.find()) {
+            HashMap<String, String> hm = new HashMap<>();
+            Pattern patternValue = Pattern.compile(">(.*?)</");
+            Pattern patternKey = Pattern.compile("</(.*?)>");
+
+            String subm = subMatch.group(1);
+            System.out.println(subm);
+
+            Matcher mtchVal = patternValue.matcher(subm);
+            Matcher mtchKey = patternKey.matcher(subm);
+
+            while (mtchVal.find() && mtchKey.find()) {
+                String val = mtchVal.group(1);
+                if (val.contains(">")) {
+                    int start = val.indexOf(">");
+                    val = val.substring(start + 1);
+                }
+                hm.put(mtchKey.group(1), val);
+            }
+            extractedData.add(hm);
+        }
+        return extractedData;
     }
 }

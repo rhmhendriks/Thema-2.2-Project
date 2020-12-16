@@ -45,7 +45,9 @@ public class SQLSystem {
 
             // makeup statement
             String theStatement = "INSERT INTO `Meting` (`stn`, `Datum`, `Tijd`, `Temperatuur`, `Dauwpunt`, `Luchtdruk_Station`, `Luchtdruk_Zee`, `Zicht`, `Windsnelheid`, `Neerslag`, `Sneeuwval`, `Gebeurtenis`, `Bewolking`, `Windrichting`)" + 
-            "VALUES (" + station + "," + datum + "," + time + "," + temp+ "," + dauwpunt + "," + luchtdrukstn + "," + luchtdruksea + "," + visabititeit + "," + windsnelheid + "," + neerslag + "," + sneeuw + "," + gebeurtenis + "," + bewolking + "," + windrichting + ")";
+                    "VALUES ('" + station + "','" + datum + "','" + time + "','" + temp + "','" + dauwpunt + "','"
+                    + luchtdrukstn + "','" + luchtdruksea + "','" + visabititeit + "','" + windsnelheid + "','"
+                    + neerslag + "','" + sneeuw + "'," + gebeurtenis + ",'" + bewolking + "','" + windrichting + "')";
 
             System.out.println(theStatement);
 
