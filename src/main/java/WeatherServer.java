@@ -11,8 +11,7 @@ import Tools.FunctionLibary;
 
 public class WeatherServer {
 
-    public WeatherServer() {
-    };
+    public WeatherServer() {};
 
     public static void main(String[] args) {
         Semaphore sem = new Semaphore(50, true);
