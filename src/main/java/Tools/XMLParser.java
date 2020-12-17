@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 
 public class XMLParser{
 
-    private ArrayList notToUseTags; 
+    private ArrayList<String> notToUseTags; 
     private String xmlFileName;
 
     public XMLParser() {
@@ -24,7 +24,7 @@ public class XMLParser{
     /** 
      * @return ArrayList
      */
-    public ArrayList getNotToUseTags() {
+    public ArrayList<String> getNotToUseTags() {
         return this.notToUseTags;
     }
 
@@ -33,7 +33,7 @@ public class XMLParser{
      * @return HashMap<String, String>
      */
 
-    public void setNotToUseTags(ArrayList notToUseTags) {
+    public void setNotToUseTags(ArrayList<String> notToUseTags) {
         this.notToUseTags = notToUseTags;
     }
 
@@ -163,7 +163,7 @@ public class XMLParser{
             Pattern patternKey = Pattern.compile("</(.*?)>");
 
             String subm = subMatch.group(1);
-            System.out.println(subm);
+            //System.out.println(subm);
 
             Matcher mtchVal = patternValue.matcher(subm);
             Matcher mtchKey = patternKey.matcher(subm);
