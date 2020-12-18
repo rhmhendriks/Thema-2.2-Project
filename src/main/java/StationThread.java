@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.concurrent.Semaphore;
 
 import Tools.FunctionLibary;
@@ -15,20 +17,21 @@ public class StationThread implements Runnable {
     private Socket connectionSocket;
     private Semaphore sem;
     private XMLParser parser;
-    private Connection con;
+    private Connection con; // SQL Connection
     private MessurementValidator mv;
 
     public StationThread(Socket connectionSocket, Semaphore sem, Connection con, MessurementValidator mv) {
         this.connectionSocket = connectionSocket;
-        this.sem = sem;
-        this.con = con;
-        this.mv = mv;
+        this.sem = sem; // The semaphore
+        this.con = con; // SQL connection from server
+        this.mv = mv; // The MessurementValidator
     }
 
     public void run() {
         try {
-            parser = new XMLParser();
+            parser = new XMLParser(); // new XML parser
 
+            // Variable to get data from inputstream
             InputStream inputToServer = connectionSocket.getInputStream();
 
             // Define the string
@@ -38,14 +41,14 @@ public class StationThread implements Runnable {
             BufferedReader input = new BufferedReader(new InputStreamReader(inputToServer));
 
             // Lets put the XML file together
-            StringBuilder sb = new StringBuilder();
-            sb.append("");
-            string = input.readLine();
+            StringBuilder sb = new StringBuilder(); // To easely append the XML file in one line
+            sb.append(""); // needed to prevent null pointer exceptions when incoming value is null
+            string = input.readLine(); // We read the first line
 
             // While we still have weatherdata we continue to assemble the XML
             while (!string.equals("</WEATHERDATA>")) {
                 sb.append(string.trim()); // remove tabs and spacing in order to process the XML stream right later-on
-                string = input.readLine();
+                string = input.readLine(); // read new line
             }
 
             if (string.equals("</WEATHERDATA>")) {
@@ -73,8 +76,6 @@ public class StationThread implements Runnable {
             } catch (InterruptedException ie) {
                 FunctionLibary.errorCLI("This thread couldn't complete the actions. This is either an resource problem or a timed out connection: " + ie.getMessage());
             }
-            
-            
         }
     }
 }

@@ -21,15 +21,13 @@ public class MessurementValidator {
         ArrayList<String> colmnToCheck = new ArrayList<>();
         Double avTemp = null;
         String stn = data.get("STN");
-        String date = data.get("Datum");
-        String time = data.get("Tijd");
 
         // The statement to retrieve the data of the last 30 messurements
         String statement = "SELECT * FROM `Meting` WHERE `stn` =" + stn + " ORDER BY `Tijd` ASC LIMIT 30";
 
         // Execute the statement and get an hashmap the average values
         // NOTE the Date and Time are not used. 
-        System.out.println(statement);
+        // System.out.println(statement);
         ArrayList<HashMap<String, String>> al = SQLSystem.retrieveAverageMessurementData(statement, con);
 
         // First we have to find the average temreature to use. 
@@ -53,6 +51,8 @@ public class MessurementValidator {
                 Double tmp = Double.valueOf(value); // make it a double for calculations 
                 if (tmp > (avTemp-(avTemp/100*20)) && tmp < (avTemp+(avTemp/100*20))){ // if temp is whitin a window 20%
                     correctData.put("Temperatuur", tmp.toString()); // add data to retun
+                } else {
+                    correctData.put("Temperatuur", avTemp.toString());
                 }
             } else if (value.toString().isEmpty()){
                 colmnToCheck.add(key.toString()); // add to checkColumns for later check

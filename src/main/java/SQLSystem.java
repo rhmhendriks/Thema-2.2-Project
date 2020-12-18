@@ -46,7 +46,7 @@ public class SQLSystem {
 
         st.close();
     } catch (SQLException e) {
-        System.err.println("The server encountered an SQL-error ");
+        FunctionLibary.errorCLI("The server encountered an SQL-error ");
         e.printStackTrace();
     }
 
@@ -83,8 +83,6 @@ public class SQLSystem {
                     + luchtdrukstn + "','" + luchtdruksea + "','" + visabititeit + "','" + windsnelheid + "','"
                     + neerslag + "','" + sneeuw + "'," + gebeurtenis + ",'" + bewolking + "','" + windrichting + "')";
 
-            
-            
             //System.out.println(theStatement);
             FunctionLibary.debuggerOutput(Configuration.DEBUG_MODE, 2, theStatement, new Exception("DUMMY"));
 

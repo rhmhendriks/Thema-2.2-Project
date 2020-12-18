@@ -22,14 +22,12 @@ public class WeatherServer {
         try {
             ServerSocket srvSock = new ServerSocket(7789);
 
-            // setup create SQL connection
-            Connection con;
-
             // Select right driver
             Class.forName(Configuration.SQL_DRIVER);
 
+            // setup create SQL connection
             // Setup the connection itself
-            con = DriverManager.getConnection(Configuration.SQL_URL, Configuration.SQL_USER,
+            Connection con = DriverManager.getConnection(Configuration.SQL_URL, Configuration.SQL_USER,
                     Configuration.SQL_PASSWORD);
 
             System.out.println(ANSI.ANSI_BYELLOW + ANSI.ANSI_BOLD

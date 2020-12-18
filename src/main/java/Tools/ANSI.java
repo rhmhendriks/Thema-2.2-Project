@@ -3,7 +3,7 @@ package Tools;
 /**
  * De klasse ANSI
  * 
- * De klasse ANSI is onderdeel van het project KantineSimulatie en bevind zich
+ * De klasse ANSI bevind zich
  * binnen het package "tools".
  * 
  * De klasse ansi bevat constanten die door het hele project gebruikt kunnen
@@ -15,8 +15,9 @@ package Tools;
  * @author Luc Willemse
  * @author Ronald H.M. Hendriks
  * @author Jurre de Vries
+ * @author Rienan Poortvliet
  * 
- * @version 4.4
+ * @version 4.5
  * 
  */
 public class ANSI {
