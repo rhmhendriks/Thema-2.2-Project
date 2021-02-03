@@ -49,14 +49,21 @@ public class MessurementValidator {
 
             if (key.equals("Temperatuur")){
                 Double tmp = Double.valueOf(value); // make it a double for calculations 
-                if (tmp > (avTemp-(avTemp/100*20)) && tmp < (avTemp+(avTemp/100*20))){ // if temp is whitin a window 20%
+                if (tmp > (avTemp-(avTemp*0.2)) && tmp < (avTemp+(avTemp*0.2))){ // if temp is whitin a window 20%
                     correctData.put("Temperatuur", tmp.toString()); // add data to retun
                 } else {
                     correctData.put("Temperatuur", avTemp.toString());
                 }
-            } else if (value.toString().isEmpty()){
+            } else if (value.toString().isEmpty() || value == null || value == " NaN"){
                 colmnToCheck.add(key.toString()); // add to checkColumns for later check
-            } else {
+            } else if (key.equals("Windrichting")){
+                if (value == "NaN"  || value == null){
+                    colmnToCheck.add(key.toString());
+                } else {
+                    correctData.put(key, value);
+                }
+            } 
+            else {
                 correctData.put(key, value);
             }
             it.remove(); // avoids exception
@@ -67,8 +74,10 @@ public class MessurementValidator {
                 Double som = 0.00;
 
                 for (HashMap<String, String> hm : al){
-                    FunctionLibary.debuggerOutput(Configuration.DEBUG_MODE, 2, column + "  hm value is  " + hm.get(column), new Exception("DUMMY"));
-                    som += som + Double.valueOf(hm.get(column));
+                    //FunctionLibary.debuggerOutput(Configuration.DEBUG_MODE, 2, column + "  hm value is  " + hm.get(column), new Exception("DUMMY"));
+                    String value;
+                    if (hm.get(column) == null){value = "0.00";} else {value = hm.get(column);}
+                    som += som + Double.valueOf(value);
                 }
 
                 som = som/al.size();

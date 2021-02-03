@@ -72,7 +72,7 @@ public class SQLSystem {
         String windrichting = messurementData.get("WNDDIR");
 
         try{
-            sem.tryAcquire(10, TimeUnit.SECONDS); // try to get a lock, with a time-out rate of 10 seconds
+            //sem.tryAcquire(25, TimeUnit.SECONDS); // try to get a lock, with a time-out rate of 10 seconds
 
             // Get a connection with the database
             Statement stmt = con.createStatement();
@@ -88,7 +88,7 @@ public class SQLSystem {
 
             stmt.executeUpdate(theStatement);
             Thread.sleep(10);
-            sem.release();
+            //sem.release();
             
         } catch (SQLException e) {
                 System.err.println("The server encountered an SQL-error ");

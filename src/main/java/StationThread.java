@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 import Tools.FunctionLibary;
 import Tools.XMLParser;
@@ -29,6 +30,8 @@ public class StationThread implements Runnable {
 
     public void run() {
         try {
+            sem.tryAcquire();
+            
             parser = new XMLParser(); // new XML parser
 
             // Variable to get data from inputstream
@@ -53,6 +56,7 @@ public class StationThread implements Runnable {
 
             if (string.equals("</WEATHERDATA>")) {
                 sb.append(string.trim()); // add the ending-tag to make sure everything is complete
+                //System.out.println(sb.toString());
                 processXMLstream(sb.toString(), sem, mv); // process the datastream
                 connectionSocket.close(); // Close the connection when we are done. 
             }
@@ -61,21 +65,27 @@ public class StationThread implements Runnable {
         } catch (IOException ioe) {
             FunctionLibary.errorCLI("We encountered an IOExeption during this thread! Below are mor details: ");
             ioe.printStackTrace();
-        } 
+        } //catch (InterruptedException ie) {
+            //FunctionLibary.errorCLI("This thread couldn't complete the actions. This is either an resource problem or a timed out connection: " + ie.getMessage());
+        //} 
+        finally {
+            System.out.println();
+            sem.release();
+        }
     }
 
     private void processXMLstream(String XMLstream, Semaphore sem, MessurementValidator mv) {
         ArrayList<HashMap<String, String>> xmldata = parser.parseStream("MEASUREMENT", XMLstream); // convert the cluster of XML messuraments to HashMaps
 
         for (HashMap<String, String> hm : xmldata) {
-            try {
+            //try {
                 HashMap<String, String> nhm = mv.validate(hm, con);
-                sem.acquire();
+                //sem.acquire();
                 SQLSystem.addMessurement(nhm, sem, con); // Add the data to the database
-                sem.release();
-            } catch (InterruptedException ie) {
-                FunctionLibary.errorCLI("This thread couldn't complete the actions. This is either an resource problem or a timed out connection: " + ie.getMessage());
-            }
+                //sem.release();
+            //} catch (InterruptedException ie) {
+            //    FunctionLibary.errorCLI("This thread couldn't complete the actions. This is either an resource problem or a timed out connection: " + ie.getMessage());
+            //}
         }
     }
 }

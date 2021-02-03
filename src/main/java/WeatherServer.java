@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 import Tools.ANSI;
 import Tools.FunctionLibary;
@@ -14,7 +15,7 @@ public class WeatherServer {
     public WeatherServer() {};
 
     public static void main(String[] args) {
-        Semaphore sem = new Semaphore(50, true);
+        Semaphore sem = new Semaphore(30, true);
         // Connection variable
         Socket conSock;
         MessurementValidator mv = new MessurementValidator();
@@ -33,10 +34,13 @@ public class WeatherServer {
             System.out.println(ANSI.ANSI_BYELLOW + ANSI.ANSI_BOLD
                     + "The UNWDMI-server has been started, and is ready to use" + ANSI.ANSI_RESET);
 
+
             while (true) {
                 conSock = srvSock.accept();
                 Thread stationThread = new Thread(new StationThread(conSock, sem, con, mv));
-                stationThread.start();
+                    
+                    stationThread.start();
+
             }
 
         } catch (IOException e) {
